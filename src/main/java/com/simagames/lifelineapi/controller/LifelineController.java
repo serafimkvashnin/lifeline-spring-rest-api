@@ -1,5 +1,6 @@
-package com.simagames.lifelineapi;
+package com.simagames.lifelineapi.controller;
 
+import com.simagames.lifelineapi.Greeting;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
