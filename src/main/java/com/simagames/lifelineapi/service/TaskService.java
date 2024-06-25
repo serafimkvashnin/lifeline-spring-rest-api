@@ -46,8 +46,9 @@ public class TaskService implements ITaskService {
             task.setCompleted(true);
             task.setCompletedDate(LocalDate.now());
             taskRepository.save(task);
+        } else {
+            throw new TaskNotFoundException("Task not found with id " + id);
         }
-        throw new TaskNotFoundException("Task not found with id " + id);
     }
 
     @Override
@@ -76,7 +77,8 @@ public class TaskService implements ITaskService {
             taskStatus.setWorkedOn(workedOn);
             taskStatus.setComment(comment);
             taskStatusRepository.save(taskStatus);
+        } else {
+            throw new TaskNotFoundException("Task not found with id " + id);
         }
-        throw new TaskNotFoundException("Task not found with id " + id);
     }
 }
