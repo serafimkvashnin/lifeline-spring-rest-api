@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Service
 public class TaskService implements ITaskService {
+
     private final TaskRepository taskRepository;
 
     private final TaskStatusRepository taskStatusRepository;
@@ -30,19 +31,21 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public Task createTask(Task task) {
+    public Task createTask(String description) {
+        Task task = new Task();
+        task.setDescription(description);
         task.setCreatedDate(LocalDate.now());
         return taskRepository.save(task);
     }
 
     @Override
-    public Task completeTask(Long id) {
+    public void completeTask(Long id) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             task.setCompleted(true);
             task.setCompletedDate(LocalDate.now());
-            return taskRepository.save(task);
+            taskRepository.save(task);
         }
         throw new TaskNotFoundException("Task not found with id " + id);
     }
@@ -57,12 +60,22 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public TaskStatus updateTaskStatus(Long id, TaskStatus status) {
+    public void updateTaskStatus(Long id, LocalDate statusDate, boolean workedOn, String comment) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
-            status.setTask(task);
-            return taskStatusRepository.save(status);
+            Optional<TaskStatus> optionalTaskStatus = taskStatusRepository.findByTaskAndStatusDate(task, statusDate);
+            TaskStatus taskStatus;
+            if (optionalTaskStatus.isPresent()) {
+                taskStatus = optionalTaskStatus.get();
+            } else {
+                taskStatus = new TaskStatus();
+                taskStatus.setTask(task);
+                taskStatus.setStatusDate(statusDate);
+            }
+            taskStatus.setWorkedOn(workedOn);
+            taskStatus.setComment(comment);
+            taskStatusRepository.save(taskStatus);
         }
         throw new TaskNotFoundException("Task not found with id " + id);
     }
