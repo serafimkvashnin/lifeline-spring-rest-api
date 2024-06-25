@@ -1,5 +1,6 @@
 package com.simagames.lifelineapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class TaskStatus {
     private String comment;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "task_id")
     private Task task;
 }
