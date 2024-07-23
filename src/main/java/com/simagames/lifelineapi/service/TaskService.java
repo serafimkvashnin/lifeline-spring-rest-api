@@ -5,23 +5,20 @@ import com.simagames.lifelineapi.model.Task;
 import com.simagames.lifelineapi.model.TaskStatus;
 import com.simagames.lifelineapi.repository.TaskRepository;
 import com.simagames.lifelineapi.repository.TaskStatusRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class TaskService implements ITaskService {
 
     private final TaskRepository taskRepository;
 
     private final TaskStatusRepository taskStatusRepository;
-
-    public TaskService(TaskRepository taskRepository, TaskStatusRepository taskStatusRepository) {
-        this.taskRepository = taskRepository;
-        this.taskStatusRepository = taskStatusRepository;
-    }
 
     @Override
     public List<Task> getTasks(int month, int year) {
@@ -32,9 +29,7 @@ public class TaskService implements ITaskService {
 
     @Override
     public Task createTask(String description) {
-        Task task = new Task();
-        task.setDescription(description);
-        task.setCreatedDate(LocalDate.now());
+        Task task = Task.builder().description(description).createdDate(LocalDate.now()).build();
         return taskRepository.save(task);
     }
 

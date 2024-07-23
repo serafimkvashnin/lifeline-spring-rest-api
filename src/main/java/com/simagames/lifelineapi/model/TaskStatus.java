@@ -2,14 +2,16 @@ package com.simagames.lifelineapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@Data
+@Builder
+@NoArgsConstructor
 @Entity
-@Getter
-@Setter
 @Table(name = "task_status", schema = "main")
 public class TaskStatus {
     @Id
@@ -24,4 +26,12 @@ public class TaskStatus {
     @JsonIgnore
     @JoinColumn(name = "task_id")
     private Task task;
+
+    public TaskStatus(Long id, LocalDate statusDate, boolean workedOn, String comment, Task task) {
+        this.id = id;
+        this.statusDate = statusDate;
+        this.workedOn = workedOn;
+        this.comment = comment;
+        this.task = task;
+    }
 }

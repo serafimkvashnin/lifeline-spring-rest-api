@@ -1,15 +1,15 @@
 package com.simagames.lifelineapi.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Data
+@Builder
+@NoArgsConstructor
 @Entity
-@Getter
-@Setter
 @Table(name = "task", schema = "main")
 public class Task {
     @Id
@@ -23,4 +23,13 @@ public class Task {
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaskStatus> statuses;
+
+    public Task(Long id, String description, LocalDate createdDate, LocalDate completedDate, boolean isCompleted, List<TaskStatus> statuses) {
+        this.id = id;
+        this.description = description;
+        this.createdDate = createdDate;
+        this.completedDate = completedDate;
+        this.isCompleted = isCompleted;
+        this.statuses = statuses;
+    }
 }
